@@ -1,24 +1,12 @@
-# Seedling ATS
-🌱 스타트업/중소기업을 위한 직관적인 채용 관리 시스템
+# React + Vite
 
-새싹같은 인재를 발견하고 성장시키는 첫 시작점
+This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
-## 🎯 프로젝트 목표
-- 분산된 채용 정보를 한 곳에서 통합 관리
-- 직관적인 지원자 여정 설계
-- 효율적인 면접 스케줄링
+Currently, two official plugins are available:
 
-## ✨ 핵심 기능
-- **지원자 여정 관리**: 칸반보드/테이블 뷰 선택 가능
-- **구글 캘린더 연동**: 면접 일정 자동 동기화
-- **엑셀 업로드**: 지원자 정보 자동 파싱
-- **통계 대시보드**: 채용 현황 시각화
+- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
+- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
 
-## 🛠 기술 스택
-- **Frontend**: React + Vite
-- **배포**: Vercel
-- **저장소**: LocalStorage
-- **연동**: Google Calendar API
+## Expanding the ESLint configuration
 
-## 🎨 UX 철학
-별도 설명 없이도 바로 사용할 수 있는 직관적 설계
+If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
