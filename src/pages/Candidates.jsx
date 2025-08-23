@@ -171,63 +171,126 @@ const Candidates = () => {
       {viewMode === 'table' && (
         <div className="table-view">
           <div className="table-container">
-            <table>
-              <thead>
-                <tr>
-                  <th>이름</th>
-                  <th>이메일</th>
-                  <th>지원직무</th>
-                  <th>지원일자</th>
-                  <th>현재단계</th>
-                  <th>평가점수</th>
-                  <th>코멘트</th>
-                </tr>
-              </thead>
-              <tbody>
-                {Object.values(candidatesByStage).flat().map((candidate) => (
-                  <tr 
-                    key={candidate.id}
-                    className="candidate-row"
-                    onClick={() => handleCandidateClick(candidate)}
-                  >
-                    <td>
-                      <div className="candidate-name">
-                        <strong>{candidate.name}</strong>
-                      </div>
-                    </td>
-                    <td>{candidate.email}</td>
-                    <td>{candidate.position}</td>
-                    <td>{formatDate(candidate.appliedDate)}</td>
-                    <td>
-                      <span 
-                        className="stage-badge"
-                        style={{ backgroundColor: getStageColor(candidate.currentStage) }}
-                      >
-                        {STAGE_LABELS[candidate.currentStage]}
-                      </span>
-                    </td>
-                    <td>
-                      {candidate.score > 0 ? (
-                        <span className="score">{candidate.score}점</span>
-                      ) : (
-                        <span className="no-score">평가 대기</span>
-                      )}
-                    </td>
-                    <td>
-                      <span className="comment-preview">
-                        {candidate.comment ? 
-                          (candidate.comment.length > 30 ? 
-                            candidate.comment.substring(0, 30) + '...' : 
-                            candidate.comment
-                          ) : 
-                          '코멘트 없음'
-                        }
-                      </span>
-                    </td>
+            {Object.values(candidatesByStage).flat().length > 0 ? (
+              <table>
+                <thead>
+                  <tr>
+                    <th>지원자 정보</th>
+                    <th>지원직무</th>
+                    <th>지원일자</th>
+                    <th>현재단계</th>
+                    <th>평가점수</th>
+                    <th>코멘트</th>
+                    <th>액션</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
+                </thead>
+                <tbody>
+                  {Object.values(candidatesByStage).flat().map((candidate, index) => (
+                    <tr 
+                      key={candidate.id}
+                      className={`candidate-row ${index % 2 === 0 ? 'even-row' : 'odd-row'}`}
+                      onClick={() => handleCandidateClick(candidate)}
+                    >
+                      <td>
+                        <div className="candidate-info-cell">
+                          <div className="candidate-name">
+                            <strong>{candidate.name}</strong>
+                          </div>
+                          <div className="candidate-email">
+                            {candidate.email}
+                          </div>
+                        </div>
+                      </td>
+                      <td>
+                        <span className="position-text">{candidate.position}</span>
+                      </td>
+                      <td>
+                        <span className="date-text">{formatDate(candidate.appliedDate)}</span>
+                      </td>
+                      <td>
+                        <span 
+                          className="stage-badge"
+                          style={{ backgroundColor: getStageColor(candidate.currentStage) }}
+                        >
+                          {STAGE_LABELS[candidate.currentStage]}
+                        </span>
+                      </td>
+                      <td>
+                        {candidate.score > 0 ? (
+                          <div className="score-cell">
+                            <span className="score-value">{candidate.score}</span>
+                            <span className="score-unit">점</span>
+                          </div>
+                        ) : (
+                          <span className="no-score">평가 대기</span>
+                        )}
+                      </td>
+                      <td>
+                        <span className="comment-preview">
+                          {candidate.comment ? 
+                            (candidate.comment.length > 25 ? 
+                              candidate.comment.substring(0, 25) + '...' : 
+                              candidate.comment
+                            ) : 
+                            '코멘트 없음'
+                          }
+                        </span>
+                      </td>
+                      <td>
+                        <div className="action-buttons">
+                          <button 
+                            className="action-btn view-btn"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              handleCandidateClick(candidate);
+                            }}
+                            title="상세보기"
+                          >
+                            👁️
+                          </button>
+                          <button 
+                            className="action-btn edit-btn"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              // 편집 기능은 나중에 구현
+                              console.log('편집:', candidate.id);
+                            }}
+                            title="편집"
+                          >
+                            ✏️
+                          </button>
+                          <button 
+                            className="action-btn delete-btn"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              // 삭제 기능은 나중에 구현
+                              console.log('삭제:', candidate.id);
+                            }}
+                            title="삭제"
+                          >
+                            🗑️
+                          </button>
+                        </div>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            ) : (
+              <div className="empty-table">
+                <div className="empty-table-content">
+                  <div className="empty-icon">📋</div>
+                  <h3>지원자가 없습니다</h3>
+                  <p>새로운 지원자를 추가하여 시작해보세요</p>
+                  <button 
+                    className="btn btn-primary"
+                    onClick={() => setIsAddModalOpen(true)}
+                  >
+                    👤 첫 지원자 추가하기
+                  </button>
+                </div>
+              </div>
+            )}
           </div>
         </div>
       )}

@@ -14,7 +14,6 @@ ChartJS.register(ArcElement, Tooltip, Legend, CategoryScale, LinearScale, BarEle
 const Dashboard = () => {
   const [statistics, setStatistics] = useState(null);
   const [candidatesByStage, setCandidatesByStage] = useState({});
-  const [recentCandidates, setRecentCandidates] = useState([]);
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [selectedCandidate, setSelectedCandidate] = useState(null);
   const [isDetailModalOpen, setIsDetailModalOpen] = useState(false);
@@ -36,13 +35,6 @@ const Dashboard = () => {
       stageData[stage] = candidateStorage.getCandidatesByStage(stage);
     });
     setCandidatesByStage(stageData);
-
-    // 최근 지원자 데이터 로드 (최근 5명)
-    const allCandidates = candidateStorage.getAllCandidates();
-    const sortedCandidates = allCandidates
-      .sort((a, b) => new Date(b.appliedDate) - new Date(a.appliedDate))
-      .slice(0, 5);
-    setRecentCandidates(sortedCandidates);
   };
 
   const handleAddCandidate = (candidate) => {
@@ -159,14 +151,15 @@ const Dashboard = () => {
           font: {
             size: 12,
             family: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif'
-          }
+          },
+          color: getComputedStyle(document.documentElement).getPropertyValue('--color-text-primary') || '#1d1d1f'
         }
       },
       tooltip: {
-        backgroundColor: 'rgba(0, 0, 0, 0.8)',
-        titleColor: '#fff',
-        bodyColor: '#fff',
-        borderColor: 'rgba(255, 255, 255, 0.1)',
+        backgroundColor: getComputedStyle(document.documentElement).getPropertyValue('--color-bg-secondary') || '#f8f9fa',
+        titleColor: getComputedStyle(document.documentElement).getPropertyValue('--color-text-primary') || '#1d1d1f',
+        bodyColor: getComputedStyle(document.documentElement).getPropertyValue('--color-text-secondary') || '#6e6e73',
+        borderColor: getComputedStyle(document.documentElement).getPropertyValue('--color-border-secondary') || '#e5e5e7',
         borderWidth: 1,
         cornerRadius: 8,
         displayColors: true,
@@ -189,10 +182,10 @@ const Dashboard = () => {
         display: false
       },
       tooltip: {
-        backgroundColor: 'rgba(0, 0, 0, 0.8)',
-        titleColor: '#fff',
-        bodyColor: '#fff',
-        borderColor: 'rgba(255, 255, 255, 0.1)',
+        backgroundColor: getComputedStyle(document.documentElement).getPropertyValue('--color-bg-secondary') || '#f8f9fa',
+        titleColor: getComputedStyle(document.documentElement).getPropertyValue('--color-text-primary') || '#1d1d1f',
+        bodyColor: getComputedStyle(document.documentElement).getPropertyValue('--color-text-secondary') || '#6e6e73',
+        borderColor: getComputedStyle(document.documentElement).getPropertyValue('--color-border-secondary') || '#e5e5e7',
         borderWidth: 1,
         cornerRadius: 8
       }
@@ -201,7 +194,7 @@ const Dashboard = () => {
       y: {
         beginAtZero: true,
         grid: {
-          color: 'rgba(0, 0, 0, 0.05)',
+          color: getComputedStyle(document.documentElement).getPropertyValue('--color-chart-grid') || 'rgba(0, 0, 0, 0.05)',
           drawBorder: false
         },
         ticks: {
@@ -209,7 +202,7 @@ const Dashboard = () => {
             size: 12,
             family: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif'
           },
-          color: '#64748b'
+          color: getComputedStyle(document.documentElement).getPropertyValue('--color-chart-axis') || '#64748b'
         }
       },
       x: {
@@ -221,7 +214,7 @@ const Dashboard = () => {
             size: 12,
             family: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif'
           },
-          color: '#64748b'
+          color: getComputedStyle(document.documentElement).getPropertyValue('--color-chart-axis') || '#64748b'
         }
       }
     }
@@ -247,63 +240,65 @@ const Dashboard = () => {
       {/* 통계 카드 섹션 */}
       <div className="stats-grid">
         <div className="stat-card">
-          <div className="stat-icon">👥</div>
-          <div className="stat-content">
-            <h3>전체 지원자</h3>
-            <p className="stat-number">{statistics.total}</p>
+          <div className="stat-header">
+            <span className="stat-title">전체 지원자</span>
+            <div className="stat-icon">👥</div>
           </div>
+          <div className="stat-value">{statistics.total}</div>
         </div>
 
         <div className="stat-card">
-          <div className="stat-icon">📅</div>
-          <div className="stat-content">
-            <h3>최근 7일 지원</h3>
-            <p className="stat-number">{statistics.recentApplications}</p>
+          <div className="stat-header">
+            <span className="stat-title">최근 7일 지원</span>
+            <div className="stat-icon">📅</div>
           </div>
+          <div className="stat-value">{statistics.recentApplications}</div>
         </div>
 
         <div className="stat-card">
-          <div className="stat-icon">⭐</div>
-          <div className="stat-content">
-            <h3>평균 평가점수</h3>
-            <p className="stat-number">{statistics.averageScore}점</p>
+          <div className="stat-header">
+            <span className="stat-title">평균 평가점수</span>
+            <div className="stat-icon">⭐</div>
           </div>
+          <div className="stat-value">{statistics.averageScore}점</div>
         </div>
 
         <div className="stat-card">
-          <div className="stat-icon">🎯</div>
-          <div className="stat-content">
-            <h3>진행률</h3>
-            <p className="stat-number">
-              {statistics.total > 0 
-                ? Math.round((statistics.byStage[CANDIDATE_STAGES.FINAL_PASS] / statistics.total) * 100)
-                : 0}%
-            </p>
+          <div className="stat-header">
+            <span className="stat-title">진행률</span>
+            <div className="stat-icon">🎯</div>
+          </div>
+          <div className="stat-value">
+            {statistics.total > 0 
+              ? Math.round((statistics.byStage[CANDIDATE_STAGES.FINAL_PASS] / statistics.total) * 100)
+              : 0}%
           </div>
         </div>
       </div>
 
       {/* 차트 섹션 */}
       <div className="charts-section">
-        <div className="charts-grid">
-          {/* 도넛 차트 - 단계별 현황 */}
-          <div className="chart-container">
-            <h3>📊 단계별 지원자 현황</h3>
-            <div style={{ height: '300px' }}>
-              {getDoughnutChartData() && (
-                <Doughnut data={getDoughnutChartData()} options={doughnutOptions} />
-              )}
-            </div>
+        {/* 도넛 차트 - 단계별 현황 */}
+        <div className="chart-container">
+          <div className="chart-header">
+            <h3 className="chart-title">📊 단계별 지원자 현황</h3>
           </div>
+          <div className="chart-content">
+            {getDoughnutChartData() && (
+              <Doughnut data={getDoughnutChartData()} options={doughnutOptions} />
+            )}
+          </div>
+        </div>
 
-          {/* 바 차트 - 월별 지원자 추이 */}
-          <div className="chart-container">
-            <h3>📈 월별 지원자 추이</h3>
-            <div style={{ height: '300px' }}>
-              {getBarChartData() && (
-                <Bar data={getBarChartData()} options={barOptions} />
-              )}
-            </div>
+        {/* 바 차트 - 월별 지원자 추이 */}
+        <div className="chart-container">
+          <div className="chart-header">
+            <h3 className="chart-title">📈 월별 지원자 추이</h3>
+          </div>
+          <div className="chart-content">
+            {getBarChartData() && (
+              <Bar data={getBarChartData()} options={barOptions} />
+            )}
           </div>
         </div>
       </div>
@@ -347,79 +342,36 @@ const Dashboard = () => {
         </div>
       </div>
 
-      {/* 최근 지원자 섹션 */}
-      <div className="recent-candidates">
-        <h2>🆕 최근 지원자</h2>
-        <div className="candidates-table">
-          <table>
-            <thead>
-              <tr>
-                <th>이름</th>
-                <th>지원직무</th>
-                <th>지원일자</th>
-                <th>현재단계</th>
-                <th>평가점수</th>
-              </tr>
-            </thead>
-            <tbody>
-              {recentCandidates.map((candidate) => (
-                <tr 
-                  key={candidate.id} 
-                  className="candidate-row"
-                  onClick={() => handleCandidateClick(candidate)}
-                >
-                  <td>
-                    <div className="candidate-name">
-                      <strong>{candidate.name}</strong>
-                      <span className="candidate-email">{candidate.email}</span>
-                    </div>
-                  </td>
-                  <td>{candidate.position}</td>
-                  <td>{formatDate(candidate.appliedDate)}</td>
-                  <td>
-                    <span 
-                      className="stage-badge"
-                      style={{ backgroundColor: getStageColor(candidate.currentStage) }}
-                    >
-                      {STAGE_LABELS[candidate.currentStage]}
-                    </span>
-                  </td>
-                  <td>
-                    {candidate.score > 0 ? (
-                      <span className="score">{candidate.score}점</span>
-                    ) : (
-                      <span className="no-score">평가 대기</span>
-                    )}
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      </div>
-
       {/* 빠른 액션 섹션 */}
       <div className="quick-actions">
-        <h2>⚡ 빠른 액션</h2>
-        <div className="actions-grid">
+        <div className="quick-actions-header">
+          <div className="header-content">
+            <h2>⚡ 빠른 액션</h2>
+            <p>자주 사용하는 기능에 빠르게 접근하세요</p>
+          </div>
           <button 
-            className="action-btn"
+            className="btn btn-primary"
             onClick={() => setIsAddModalOpen(true)}
           >
-            <span className="action-icon">👤</span>
-            <span>새 지원자 추가</span>
+            👤 지원자 추가
           </button>
-          <button className="action-btn">
+        </div>
+        <div className="actions-grid">
+          <button className="quick-action-btn secondary">
             <span className="action-icon">📅</span>
             <span>면접 일정 등록</span>
           </button>
-          <button className="action-btn">
+          <button className="quick-action-btn secondary">
             <span className="action-icon">📊</span>
-            <span>상세 리포트 보기</span>
+            <span>월간 리포트</span>
           </button>
-          <button className="action-btn">
-            <span className="action-icon">📤</span>
+          <button className="quick-action-btn secondary">
+            <span className="action-icon">💾</span>
             <span>데이터 백업</span>
+          </button>
+          <button className="quick-action-btn secondary">
+            <span className="action-icon">⚙️</span>
+            <span>설정</span>
           </button>
         </div>
       </div>

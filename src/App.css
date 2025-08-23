@@ -1,42 +1,123 @@
 #root {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
-  text-align: center;
+  width: 100%;
+  min-height: 100vh;
+  margin: 0;
+  padding: 0;
+  background-color: var(--color-bg-primary, #ffffff);
+  color: var(--color-text-primary, #1d1d1f);
+  font-family: var(--font-family, -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Segoe UI', Roboto, sans-serif);
+  transition: background-color 0.3s ease, color 0.3s ease;
+  overflow-x: hidden;
 }
 
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
+/* 전역 버튼 스타일 */
+.btn {
+  background-color: var(--color-primary, #007AFF);
+  color: #ffffff;
+  border: none;
+  border-radius: var(--radius-md, 8px);
+  padding: var(--spacing-3, 0.75rem) var(--spacing-4, 1rem);
+  font-size: var(--font-size-sm, 0.875rem);
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-family: inherit;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-2, 0.5rem);
+  text-decoration: none;
+  line-height: 1;
 }
 
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
+.btn:hover {
+  background-color: var(--color-primary-hover, #0056CC);
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-md, 0 4px 6px -1px rgba(0, 0, 0, 0.1));
+}
+
+.btn:active {
+  transform: translateY(0);
+}
+
+.btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* 버튼 변형 */
+.btn-primary {
+  background-color: var(--color-primary, #007AFF);
+}
+
+.btn-primary:hover {
+  background-color: var(--color-primary-hover, #0056CC);
+}
+
+.btn-success {
+  background-color: var(--color-success, #34C759);
+}
+
+.btn-success:hover {
+  background-color: var(--color-success-hover, #28A745);
+}
+
+.btn-warning {
+  background-color: var(--color-warning, #FF9500);
+}
+
+.btn-warning:hover {
+  background-color: var(--color-warning-hover, #E6850E);
+}
+
+.btn-danger {
+  background-color: var(--color-danger, #FF3B30);
+}
+
+.btn-danger:hover {
+  background-color: var(--color-danger-hover, #DC3545);
+}
+
+.btn-outline {
+  background-color: transparent;
+  color: var(--color-primary, #007AFF);
+  border: 2px solid var(--color-primary, #007AFF);
+}
+
+.btn-outline:hover {
+  background-color: var(--color-primary, #007AFF);
+  color: #ffffff;
+}
+
+/* 링크 스타일 */
+a {
+  color: var(--color-primary, #007AFF);
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+a:hover {
+  color: var(--color-primary-hover, #0056CC);
+}
+
+/* 모든 화면 크기에서 일관된 스타일 */
+* {
+  box-sizing: border-box;
+}
+
+/* 반응형 디자인 */
+@media (max-width: 768px) {
+  .btn {
+    padding: var(--spacing-2, 0.5rem) var(--spacing-3, 0.75rem);
+    font-size: var(--font-size-xs, 0.75rem);
   }
-  to {
-    transform: rotate(360deg);
+}
+
+@media (max-width: 480px) {
+  .btn {
+    padding: var(--spacing-2, 0.5rem);
+    font-size: var(--font-size-xs, 0.75rem);
+    width: 100%;
   }
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
-  }
-}
-
-.card {
-  padding: 2em;
-}
-
-.read-the-docs {
-  color: #888;
 }

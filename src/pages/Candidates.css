@@ -1,31 +1,36 @@
 /* 지원자 관리 페이지 스타일 */
 .candidates-page {
   max-width: 100%;
+  background-color: var(--color-bg-primary);
+  transition: background-color 0.3s ease;
 }
 
 /* 페이지 헤더 */
 .page-header {
   margin-bottom: 2rem;
   padding: 2rem;
-  background: white;
+  background: var(--color-bg-secondary);
   border-radius: 16px;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05), 0 1px 2px rgba(0, 0, 0, 0.1);
-  border: 1px solid #f1f5f9;
+  box-shadow: var(--shadow-md);
+  border: 1px solid var(--color-border-secondary);
+  transition: background-color 0.3s ease, border-color 0.3s ease;
 }
 
 .header-content h1 {
   margin: 0 0 0.75rem 0;
   font-size: 2rem;
   font-weight: 700;
-  color: #0f172a;
+  color: var(--color-text-primary);
   letter-spacing: -0.025em;
+  transition: color 0.3s ease;
 }
 
 .header-content p {
   margin: 0;
   font-size: 1.125rem;
-  color: #64748b;
+  color: var(--color-text-secondary);
   font-weight: 400;
+  transition: color 0.3s ease;
 }
 
 .header-actions {
@@ -38,10 +43,11 @@
 /* 뷰 토글 버튼 */
 .view-toggle {
   display: flex;
-  background: #f1f5f9;
+  background: var(--color-bg-tertiary);
   border-radius: 8px;
   padding: 0.25rem;
-  border: 1px solid #e2e8f0;
+  border: 1px solid var(--color-border-secondary);
+  transition: background-color 0.3s ease, border-color 0.3s ease;
 }
 
 .toggle-btn {
@@ -51,19 +57,19 @@
   border-radius: 6px;
   font-size: 0.875rem;
   font-weight: 500;
-  color: #64748b;
+  color: var(--color-text-secondary);
   cursor: pointer;
   transition: all 0.2s ease;
 }
 
 .toggle-btn.active {
-  background: white;
-  color: #0f172a;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  background: var(--color-bg-primary);
+  color: var(--color-text-primary);
+  box-shadow: var(--shadow-sm);
 }
 
 .toggle-btn:hover:not(.active) {
-  color: #374151;
+  color: var(--color-text-primary);
 }
 
 /* 칸반보드 스타일 */
@@ -75,40 +81,47 @@
 }
 
 .kanban-column {
-  background: white;
+  background: var(--color-bg-secondary);
   border-radius: 16px;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05), 0 1px 2px rgba(0, 0, 0, 0.1);
-  border: 1px solid #f1f5f9;
+  box-shadow: var(--shadow-md);
+  border: 1px solid var(--color-border-secondary);
   min-height: 500px;
   display: flex;
   flex-direction: column;
+  transition: background-color 0.3s ease, border-color 0.3s ease;
 }
 
 .column-header {
   padding: 1.5rem;
-  border-bottom: 1px solid #f1f5f9;
+  border-bottom: 1px solid var(--color-border-secondary);
   border-top: 4px solid;
   border-radius: 16px 16px 0 0;
   display: flex;
   justify-content: space-between;
   align-items: center;
+  transition: border-color 0.3s ease;
+  text-align: center; /* 컬럼 헤더 중앙 정렬 */
 }
 
 .column-header h3 {
   margin: 0;
   font-size: 1.125rem;
   font-weight: 600;
-  color: #0f172a;
+  color: var(--color-text-primary);
+  transition: color 0.3s ease;
+  text-align: center; /* 컬럼 제목 중앙 정렬 */
 }
 
 .candidate-count {
-  background: #f1f5f9;
-  color: #374151;
+  background: var(--color-bg-tertiary);
+  color: var(--color-text-primary);
   padding: 0.25rem 0.75rem;
   border-radius: 20px;
   font-size: 0.875rem;
   font-weight: 600;
-  border: 1px solid #e2e8f0;
+  border: 1px solid var(--color-border-secondary);
+  transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+  text-align: center; /* 카운트 배지 중앙 정렬 */
 }
 
 .column-content {
@@ -120,20 +133,21 @@
 
 /* 지원자 카드 */
 .candidate-card {
-  background: white;
-  border: 1px solid #e2e8f0;
+  background: var(--color-bg-primary);
+  border: 1px solid var(--color-border-secondary);
   border-radius: 12px;
   padding: 1rem;
   margin-bottom: 1rem;
   cursor: pointer;
   transition: all 0.2s ease;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+  box-shadow: var(--shadow-sm);
+  text-align: left; /* 카드 전체 좌측 정렬 */
 }
 
 .candidate-card:hover {
   transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  border-color: #cbd5e1;
+  box-shadow: var(--shadow-md);
+  border-color: var(--color-border-primary);
 }
 
 .candidate-card:last-child {
@@ -145,56 +159,69 @@
   justify-content: space-between;
   align-items: flex-start;
   margin-bottom: 0.75rem;
+  text-align: left; /* 헤더 영역 좌측 정렬 */
 }
 
 .candidate-header h4 {
   margin: 0;
   font-size: 1rem;
   font-weight: 600;
-  color: #0f172a;
+  color: var(--color-text-primary);
+  transition: color 0.3s ease;
+  text-align: left; /* 이름 좌측 정렬 */
 }
 
 .score-badge {
-  background: linear-gradient(135deg, #059669, #047857);
+  background: linear-gradient(135deg, var(--color-success), var(--color-success-hover));
   color: white;
   padding: 0.25rem 0.5rem;
   border-radius: 6px;
   font-size: 0.75rem;
   font-weight: 600;
   box-shadow: 0 1px 3px rgba(5, 150, 105, 0.2);
+  text-align: center; /* 점수 배지는 중앙 정렬 유지 */
 }
 
 .candidate-info {
   margin-bottom: 0.75rem;
+  text-align: left; /* 정보 영역 좌측 정렬 */
 }
 
 .candidate-info p {
   margin: 0 0 0.25rem 0;
   font-size: 0.875rem;
+  text-align: left; /* 각 정보 항목 좌측 정렬 */
 }
 
 .candidate-info .position {
-  color: #374151;
+  color: var(--color-text-secondary);
   font-weight: 500;
+  transition: color 0.3s ease;
+  text-align: left; /* 직무 정보 좌측 정렬 */
 }
 
 .candidate-info .date {
-  color: #64748b;
+  color: var(--color-text-tertiary);
   font-size: 0.8rem;
+  transition: color 0.3s ease;
+  text-align: left; /* 날짜 정보 좌측 정렬 */
 }
 
 .candidate-comment {
-  background: #f8fafc;
-  border: 1px solid #e2e8f0;
+  background: var(--color-bg-tertiary);
+  border: 1px solid var(--color-border-secondary);
   border-radius: 8px;
   padding: 0.75rem;
+  transition: background-color 0.3s ease, border-color 0.3s ease;
+  text-align: left; /* 코멘트 좌측 정렬 */
 }
 
 .candidate-comment p {
   margin: 0;
   font-size: 0.8rem;
-  color: #475569;
+  color: var(--color-text-secondary);
   line-height: 1.4;
+  text-align: left; /* 코멘트 텍스트 좌측 정렬 */
 }
 
 /* 빈 컬럼 */
@@ -203,20 +230,58 @@
   align-items: center;
   justify-content: center;
   height: 200px;
-  color: #9ca3af;
+  color: var(--color-text-tertiary);
   font-style: italic;
-  border: 2px dashed #e2e8f0;
+  border: 2px dashed var(--color-border-secondary);
   border-radius: 12px;
   margin: 1rem 0;
+  text-align: center; /* 빈 컬럼 메시지는 중앙 정렬 */
+}
+
+/* 빈 테이블 상태 */
+.empty-table {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 400px;
+  padding: 3rem 2rem;
+}
+
+.empty-table-content {
+  text-align: center;
+  max-width: 400px;
+}
+
+.empty-icon {
+  font-size: 4rem;
+  margin-bottom: 1.5rem;
+  opacity: 0.6;
+}
+
+.empty-table-content h3 {
+  margin: 0 0 0.75rem 0;
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: var(--color-text-primary);
+  transition: color 0.3s ease;
+}
+
+.empty-table-content p {
+  margin: 0 0 2rem 0;
+  font-size: 1rem;
+  color: var(--color-text-secondary);
+  line-height: 1.5;
+  transition: color 0.3s ease;
 }
 
 /* 테이블 뷰 */
 .table-view {
-  background: white;
+  background: var(--color-bg-secondary);
   border-radius: 16px;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05), 0 1px 2px rgba(0, 0, 0, 0.1);
-  border: 1px solid #f1f5f9;
+  box-shadow: var(--shadow-md);
+  border: 1px solid var(--color-border-secondary);
   overflow: hidden;
+  transition: background-color 0.3s ease, border-color 0.3s ease;
 }
 
 .table-container {
@@ -229,71 +294,195 @@
 }
 
 .table-container th {
-  background: #f8fafc;
-  padding: 1.25rem 1.5rem;
+  background: var(--color-bg-tertiary);
+  padding: 1.5rem 1.25rem;
   text-align: left;
   font-weight: 600;
-  color: #374151;
-  border-bottom: 1px solid #e5e7eb;
+  color: var(--color-text-primary);
+  border-bottom: 2px solid var(--color-border-secondary);
   font-size: 0.875rem;
   letter-spacing: 0.01em;
   white-space: nowrap;
+  transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
 }
 
 .table-container td {
-  padding: 1.25rem 1.5rem;
-  border-bottom: 1px solid #f3f4f6;
+  padding: 1.5rem 1.25rem;
+  border-bottom: 1px solid var(--color-border-secondary);
   vertical-align: middle;
+  color: var(--color-text-secondary);
+  transition: all 0.2s ease;
+  text-align: left;
 }
 
-.table-container tr:hover {
-  background: #fafbfc;
+/* 행 구분 강화 */
+.candidate-row {
+  transition: all 0.2s ease;
+  cursor: pointer;
+}
+
+.candidate-row:hover {
+  background: var(--color-bg-tertiary);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.even-row {
+  background: var(--color-bg-primary);
+}
+
+.odd-row {
+  background: var(--color-bg-secondary);
+}
+
+.even-row:hover,
+.odd-row:hover {
+  background: var(--color-bg-tertiary);
 }
 
 .table-container tr:last-child td {
   border-bottom: none;
 }
 
-/* 테이블 내 요소들 */
-.candidate-name strong {
-  color: #0f172a;
-  font-weight: 600;
+/* 정보 계층 개선 */
+.candidate-info-cell {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
 }
 
+.candidate-name strong {
+  color: var(--color-text-primary);
+  font-weight: 700;
+  font-size: 1.125rem;
+  transition: color 0.3s ease;
+  display: block;
+}
+
+.candidate-email {
+  color: var(--color-text-tertiary);
+  font-size: 0.875rem;
+  font-weight: 400;
+  transition: color 0.3s ease;
+}
+
+.position-text {
+  color: var(--color-text-secondary);
+  font-weight: 500;
+  font-size: 0.875rem;
+  transition: color 0.3s ease;
+}
+
+.date-text {
+  color: var(--color-text-secondary);
+  font-weight: 500;
+  font-size: 0.875rem;
+  transition: color 0.3s ease;
+}
+
+/* 상태 표시 개선 */
 .stage-badge {
   color: white;
-  padding: 0.375rem 0.875rem;
+  padding: 0.5rem 1rem;
   border-radius: 20px;
   font-size: 0.75rem;
   font-weight: 600;
   text-align: center;
-  min-width: 80px;
+  min-width: 90px;
   display: inline-block;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: all 0.2s ease;
 }
 
-.score {
-  font-weight: 600;
-  color: #059669;
+.stage-badge:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+/* 평가점수 개선 */
+.score-cell {
+  display: flex;
+  align-items: baseline;
+  gap: 0.25rem;
+}
+
+.score-value {
+  font-weight: 700;
+  color: var(--color-success);
+  font-size: 1.25rem;
+  transition: color 0.3s ease;
+}
+
+.score-unit {
+  color: var(--color-text-secondary);
   font-size: 0.875rem;
+  font-weight: 500;
 }
 
 .no-score {
-  color: #9ca3af;
+  color: var(--color-text-tertiary);
   font-style: italic;
   font-size: 0.875rem;
+  transition: color 0.3s ease;
 }
 
+/* 코멘트 미리보기 */
 .comment-preview {
-  color: #64748b;
+  color: var(--color-text-secondary);
   font-size: 0.875rem;
-  max-width: 200px;
+  max-width: 180px;
   display: block;
+  transition: color 0.3s ease;
+  line-height: 1.4;
+}
+
+/* 액션 버튼 */
+.action-buttons {
+  display: flex;
+  gap: 0.5rem;
+  justify-content: center;
+}
+
+.action-btn {
+  background: none;
+  border: none;
+  padding: 0.5rem;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-size: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 36px;
+  min-height: 36px;
+}
+
+.action-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+.view-btn:hover {
+  background: var(--color-primary);
+  color: white;
+}
+
+.edit-btn:hover {
+  background: var(--color-warning);
+  color: white;
+}
+
+.delete-btn:hover {
+  background: var(--color-danger);
+  color: white;
 }
 
 /* 드래그 앤 드롭 스타일 */
 .kanban-column.drag-over {
-  background: #f8fafc;
-  border-color: #3b82f6;
+  background: var(--color-bg-tertiary);
+  border-color: var(--color-primary);
+  transition: background-color 0.3s ease, border-color 0.3s ease;
 }
 
 .candidate-card.dragging {
@@ -342,7 +531,7 @@
   }
   
   .table-container {
-    min-width: 800px;
+    min-width: 900px;
   }
 }
 
@@ -365,5 +554,52 @@
   
   .candidate-card {
     padding: 0.75rem;
+  }
+}
+
+/* 테이블 반응형 */
+@media (max-width: 1024px) {
+  .table-container th,
+  .table-container td {
+    padding: 1.25rem 1rem;
+  }
+  
+  .candidate-name strong {
+    font-size: 1rem;
+  }
+  
+  .action-buttons {
+    gap: 0.25rem;
+  }
+  
+  .action-btn {
+    min-width: 32px;
+    min-height: 32px;
+    font-size: 0.875rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .table-container {
+    min-width: 900px;
+  }
+  
+  .table-container th,
+  .table-container td {
+    padding: 1rem 0.75rem;
+  }
+  
+  .candidate-name strong {
+    font-size: 0.875rem;
+  }
+  
+  .candidate-email {
+    font-size: 0.8rem;
+  }
+  
+  .stage-badge {
+    padding: 0.375rem 0.75rem;
+    font-size: 0.7rem;
+    min-width: 80px;
   }
 }
