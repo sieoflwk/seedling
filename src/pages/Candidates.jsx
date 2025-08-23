@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { candidateStorage } from '../data/localStorage';
 import { CANDIDATE_STAGES, STAGE_LABELS } from '../data/candidateModel';
-import CandidateModal from '../components/CandidateModal';
+import AddCandidateModal from '../components/AddCandidateModal';
 import CandidateDetailModal from '../components/CandidateDetailModal';
+import KanbanBoard from '../components/KanbanBoard';
 import './Candidates.css';
 
 const Candidates = () => {
   const [candidatesByStage, setCandidatesByStage] = useState({});
+  const [statistics, setStatistics] = useState(null);
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [selectedCandidate, setSelectedCandidate] = useState(null);
   const [isDetailModalOpen, setIsDetailModalOpen] = useState(false);
@@ -14,6 +16,7 @@ const Candidates = () => {
 
   useEffect(() => {
     loadCandidates();
+    loadStatistics();
   }, []);
 
   const loadCandidates = () => {
@@ -24,8 +27,14 @@ const Candidates = () => {
     setCandidatesByStage(stageData);
   };
 
+  const loadStatistics = () => {
+    const stats = candidateStorage.getStatistics();
+    setStatistics(stats);
+  };
+
   const handleAddCandidate = (candidate) => {
     loadCandidates();
+    loadStatistics();
   };
 
   const handleCandidateClick = (candidate) => {
@@ -40,26 +49,12 @@ const Candidates = () => {
 
   const handleDetailUpdate = () => {
     loadCandidates();
+    loadStatistics();
   };
 
-  const handleDragStart = (e, candidate) => {
-    e.dataTransfer.setData('candidateId', candidate.id);
-  };
-
-  const handleDragOver = (e) => {
-    e.preventDefault();
-  };
-
-  const handleDrop = (e, targetStage) => {
-    e.preventDefault();
-    const candidateId = e.dataTransfer.getData('candidateId');
-    
-    if (candidateId) {
-      const result = candidateStorage.moveCandidateToStage(candidateId, targetStage);
-      if (result.success) {
-        loadCandidates();
-      }
-    }
+  const handleDataUpdate = () => {
+    loadCandidates();
+    loadStatistics();
   };
 
   const getStageColor = (stage) => {
@@ -112,131 +107,122 @@ const Candidates = () => {
         </div>
       </div>
 
+      {/* 통계 요약 */}
+      {statistics && (
+        <div className="stats-summary">
+          <div className="stat-item">
+            <span className="stat-number">{statistics.total}</span>
+            <span className="stat-label">전체 지원자</span>
+          </div>
+          <div className="stat-item">
+            <span className="stat-number">{statistics.recentApplications}</span>
+            <span className="stat-label">최근 7일</span>
+          </div>
+          <div className="stat-item">
+            <span className="stat-number">{statistics.averageScore}점</span>
+            <span className="stat-label">평균 점수</span>
+          </div>
+          <div className="stat-item">
+            <span className="stat-number">
+              {statistics.total > 0 
+                ? Math.round((statistics.byStage[CANDIDATE_STAGES.FINAL_PASS] / statistics.total) * 100)
+                : 0}%
+            </span>
+            <span className="stat-label">최종합격률</span>
+          </div>
+        </div>
+      )}
+
       {/* 칸반보드 뷰 */}
       {viewMode === 'kanban' && (
-        <div className="kanban-board">
-          {Object.values(CANDIDATE_STAGES).map((stage) => (
-            <div 
-              key={stage} 
-              className="kanban-column"
-              onDragOver={handleDragOver}
-              onDrop={(e) => handleDrop(e, stage)}
-            >
-              <div className="column-header" style={{ borderTopColor: getStageColor(stage) }}>
-                <h3>{STAGE_LABELS[stage]}</h3>
-                <span className="candidate-count">
-                  {candidatesByStage[stage]?.length || 0}
-                </span>
-              </div>
-              
-              <div className="column-content">
-                {candidatesByStage[stage]?.map((candidate) => (
-                  <div
-                    key={candidate.id}
-                    className="candidate-card"
-                    draggable
-                    onDragStart={(e) => handleDragStart(e, candidate)}
-                    onClick={() => handleCandidateClick(candidate)}
-                  >
-                    <div className="candidate-header">
-                      <h4>{candidate.name}</h4>
-                      {candidate.score > 0 && (
-                        <span className="score-badge">{candidate.score}점</span>
-                      )}
-                    </div>
-                    <div className="candidate-info">
-                      <p className="position">{candidate.position}</p>
-                      <p className="date">{formatDate(candidate.appliedDate)}</p>
-                    </div>
-                    {candidate.comment && (
-                      <div className="candidate-comment">
-                        <p>{candidate.comment}</p>
-                      </div>
-                    )}
-                  </div>
-                ))}
-                
-                {(!candidatesByStage[stage] || candidatesByStage[stage].length === 0) && (
-                  <div className="empty-column">
-                    <p>지원자가 없습니다</p>
-                  </div>
-                )}
-              </div>
-            </div>
-          ))}
+        <div className="kanban-section">
+          <div className="section-header">
+            <h2>📋 단계별 지원자 현황</h2>
+            <p>드래그 앤 드롭으로 지원자 단계를 변경할 수 있습니다</p>
+          </div>
+          <KanbanBoard
+            onCandidateClick={handleCandidateClick}
+            onDataUpdate={handleDataUpdate}
+          />
         </div>
       )}
 
       {/* 테이블 뷰 */}
       {viewMode === 'table' && (
-        <div className="table-view">
-          <div className="table-container">
-            <table>
-              <thead>
-                <tr>
-                  <th>이름</th>
-                  <th>이메일</th>
-                  <th>지원직무</th>
-                  <th>지원일자</th>
-                  <th>현재단계</th>
-                  <th>평가점수</th>
-                  <th>코멘트</th>
-                </tr>
-              </thead>
-              <tbody>
-                {Object.values(candidatesByStage).flat().map((candidate) => (
-                  <tr 
-                    key={candidate.id}
-                    className="candidate-row"
-                    onClick={() => handleCandidateClick(candidate)}
-                  >
-                    <td>
-                      <div className="candidate-name">
-                        <strong>{candidate.name}</strong>
-                      </div>
-                    </td>
-                    <td>{candidate.email}</td>
-                    <td>{candidate.position}</td>
-                    <td>{formatDate(candidate.appliedDate)}</td>
-                    <td>
-                      <span 
-                        className="stage-badge"
-                        style={{ backgroundColor: getStageColor(candidate.currentStage) }}
-                      >
-                        {STAGE_LABELS[candidate.currentStage]}
-                      </span>
-                    </td>
-                    <td>
-                      {candidate.score > 0 ? (
-                        <span className="score">{candidate.score}점</span>
-                      ) : (
-                        <span className="no-score">평가 대기</span>
-                      )}
-                    </td>
-                    <td>
-                      <span className="comment-preview">
-                        {candidate.comment ? 
-                          (candidate.comment.length > 30 ? 
-                            candidate.comment.substring(0, 30) + '...' : 
-                            candidate.comment
-                          ) : 
-                          '코멘트 없음'
-                        }
-                      </span>
-                    </td>
+        <div className="table-section">
+          <div className="section-header">
+            <h2>📊 지원자 목록</h2>
+            <p>모든 지원자 정보를 테이블 형태로 확인하세요</p>
+          </div>
+          <div className="table-view">
+            <div className="table-container">
+              <table>
+                <thead>
+                  <tr>
+                    <th>이름</th>
+                    <th>이메일</th>
+                    <th>지원직무</th>
+                    <th>지원일자</th>
+                    <th>현재단계</th>
+                    <th>평가점수</th>
+                    <th>코멘트</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
+                </thead>
+                <tbody>
+                  {Object.values(candidatesByStage).flat().map((candidate) => (
+                    <tr 
+                      key={candidate.id}
+                      className="candidate-row"
+                      onClick={() => handleCandidateClick(candidate)}
+                    >
+                      <td>
+                        <div className="candidate-name">
+                          <strong>{candidate.name}</strong>
+                        </div>
+                      </td>
+                      <td>{candidate.email}</td>
+                      <td>{candidate.position}</td>
+                      <td>{formatDate(candidate.appliedDate)}</td>
+                      <td>
+                        <span 
+                          className="stage-badge"
+                          style={{ backgroundColor: getStageColor(candidate.currentStage) }}
+                        >
+                          {STAGE_LABELS[candidate.currentStage]}
+                        </span>
+                      </td>
+                      <td>
+                        {candidate.score > 0 ? (
+                          <span className="score">{candidate.score}점</span>
+                        ) : (
+                          <span className="no-score">평가 대기</span>
+                        )}
+                      </td>
+                      <td>
+                        <span className="comment-preview">
+                          {candidate.comment ? 
+                            (candidate.comment.length > 30 ? 
+                              candidate.comment.substring(0, 30) + '...' : 
+                              candidate.comment
+                            ) : 
+                            '코멘트 없음'
+                          }
+                        </span>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
           </div>
         </div>
       )}
 
       {/* 지원자 추가 모달 */}
-      <CandidateModal
+      <AddCandidateModal
         isOpen={isAddModalOpen}
         onClose={() => setIsAddModalOpen(false)}
-        onSave={handleAddCandidate}
+        onSuccess={handleAddCandidate}
       />
 
       {/* 지원자 상세 정보 모달 */}

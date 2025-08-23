@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { candidateStorage } from '../data/localStorage';
 import { CANDIDATE_STAGES, STAGE_LABELS } from '../data/candidateModel';
 import { initializeSampleData } from '../utils/sampleData';
-import CandidateModal from '../components/CandidateModal';
+import AddCandidateModal from '../components/AddCandidateModal';
 import CandidateDetailModal from '../components/CandidateDetailModal';
 import { Chart as ChartJS, ArcElement, Tooltip, Legend, CategoryScale, LinearScale, BarElement, Title } from 'chart.js';
 import { Doughnut, Bar } from 'react-chartjs-2';
@@ -425,10 +425,10 @@ const Dashboard = () => {
       </div>
 
       {/* 지원자 추가 모달 */}
-      <CandidateModal
+      <AddCandidateModal
         isOpen={isAddModalOpen}
         onClose={() => setIsAddModalOpen(false)}
-        onSave={handleAddCandidate}
+        onSuccess={handleAddCandidate}
       />
 
       {/* 지원자 상세 정보 모달 */}

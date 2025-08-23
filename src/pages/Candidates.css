@@ -1,6 +1,8 @@
 /* 지원자 관리 페이지 스타일 */
 .candidates-page {
+  width: 100%;
   max-width: 100%;
+  padding: 0;
 }
 
 /* 페이지 헤더 */
@@ -35,6 +37,62 @@
   margin-top: 1.5rem;
 }
 
+/* 통계 요약 - 데스크톱에서 가로 4개 배열 */
+.stats-summary {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.stat-item {
+  background: white;
+  padding: 1.5rem;
+  border-radius: 12px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+  border: 1px solid #f1f5f9;
+  text-align: center;
+  transition: all 0.2s ease;
+}
+
+.stat-item:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.stat-number {
+  display: block;
+  font-size: 2rem;
+  font-weight: 700;
+  color: #0f172a;
+  margin-bottom: 0.5rem;
+}
+
+.stat-label {
+  font-size: 0.875rem;
+  color: #64748b;
+  font-weight: 500;
+}
+
+/* 섹션 헤더 */
+.section-header {
+  margin-bottom: 1.5rem;
+  padding: 0 0.5rem;
+}
+
+.section-header h2 {
+  margin: 0 0 0.5rem 0;
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #0f172a;
+}
+
+.section-header p {
+  margin: 0;
+  font-size: 1rem;
+  color: #64748b;
+}
+
 /* 뷰 토글 버튼 */
 .view-toggle {
   display: flex;
@@ -66,155 +124,21 @@
   color: #374151;
 }
 
-/* 칸반보드 스타일 */
-.kanban-board {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 1.5rem;
+/* 칸반보드 섹션 */
+.kanban-section {
   margin-bottom: 2rem;
 }
 
-.kanban-column {
-  background: white;
-  border-radius: 16px;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05), 0 1px 2px rgba(0, 0, 0, 0.1);
-  border: 1px solid #f1f5f9;
-  min-height: 500px;
-  display: flex;
-  flex-direction: column;
-}
-
-.column-header {
-  padding: 1.5rem;
-  border-bottom: 1px solid #f1f5f9;
-  border-top: 4px solid;
-  border-radius: 16px 16px 0 0;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.column-header h3 {
-  margin: 0;
-  font-size: 1.125rem;
-  font-weight: 600;
-  color: #0f172a;
-}
-
-.candidate-count {
-  background: #f1f5f9;
-  color: #374151;
-  padding: 0.25rem 0.75rem;
-  border-radius: 20px;
-  font-size: 0.875rem;
-  font-weight: 600;
-  border: 1px solid #e2e8f0;
-}
-
-.column-content {
-  flex: 1;
-  padding: 1rem;
-  overflow-y: auto;
-  min-height: 400px;
-}
-
-/* 지원자 카드 */
-.candidate-card {
-  background: white;
-  border: 1px solid #e2e8f0;
-  border-radius: 12px;
-  padding: 1rem;
-  margin-bottom: 1rem;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
-}
-
-.candidate-card:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  border-color: #cbd5e1;
-}
-
-.candidate-card:last-child {
-  margin-bottom: 0;
-}
-
-.candidate-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  margin-bottom: 0.75rem;
-}
-
-.candidate-header h4 {
-  margin: 0;
-  font-size: 1rem;
-  font-weight: 600;
-  color: #0f172a;
-}
-
-.score-badge {
-  background: linear-gradient(135deg, #059669, #047857);
-  color: white;
-  padding: 0.25rem 0.5rem;
-  border-radius: 6px;
-  font-size: 0.75rem;
-  font-weight: 600;
-  box-shadow: 0 1px 3px rgba(5, 150, 105, 0.2);
-}
-
-.candidate-info {
-  margin-bottom: 0.75rem;
-}
-
-.candidate-info p {
-  margin: 0 0 0.25rem 0;
-  font-size: 0.875rem;
-}
-
-.candidate-info .position {
-  color: #374151;
-  font-weight: 500;
-}
-
-.candidate-info .date {
-  color: #64748b;
-  font-size: 0.8rem;
-}
-
-.candidate-comment {
-  background: #f8fafc;
-  border: 1px solid #e2e8f0;
-  border-radius: 8px;
-  padding: 0.75rem;
-}
-
-.candidate-comment p {
-  margin: 0;
-  font-size: 0.8rem;
-  color: #475569;
-  line-height: 1.4;
-}
-
-/* 빈 컬럼 */
-.empty-column {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 200px;
-  color: #9ca3af;
-  font-style: italic;
-  border: 2px dashed #e2e8f0;
-  border-radius: 12px;
-  margin: 1rem 0;
+/* 테이블 섹션 */
+.table-section {
+  margin-bottom: 2rem;
 }
 
 /* 테이블 뷰 */
 .table-view {
   background: white;
   border-radius: 16px;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05), 0 1px 2px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
   border: 1px solid #f1f5f9;
   overflow: hidden;
 }
@@ -226,96 +150,120 @@
 .table-container table {
   width: 100%;
   border-collapse: collapse;
+  min-width: 800px;
 }
 
 .table-container th {
   background: #f8fafc;
-  padding: 1.25rem 1.5rem;
+  padding: 1rem 1.5rem;
   text-align: left;
-  font-weight: 600;
-  color: #374151;
-  border-bottom: 1px solid #e5e7eb;
   font-size: 0.875rem;
-  letter-spacing: 0.01em;
+  font-weight: 600;
+  color: #475569;
+  border-bottom: 1px solid #e2e8f0;
   white-space: nowrap;
 }
 
 .table-container td {
-  padding: 1.25rem 1.5rem;
-  border-bottom: 1px solid #f3f4f6;
+  padding: 1rem 1.5rem;
+  border-bottom: 1px solid #f1f5f9;
   vertical-align: middle;
 }
 
 .table-container tr:hover {
-  background: #fafbfc;
+  background: #f8fafc;
+  cursor: pointer;
 }
 
-.table-container tr:last-child td {
-  border-bottom: none;
-}
-
-/* 테이블 내 요소들 */
 .candidate-name strong {
-  color: #0f172a;
+  display: block;
+  font-size: 0.875rem;
   font-weight: 600;
+  color: #0f172a;
+  margin-bottom: 0.25rem;
 }
 
 .stage-badge {
-  color: white;
-  padding: 0.375rem 0.875rem;
+  display: inline-block;
+  padding: 0.25rem 0.75rem;
   border-radius: 20px;
   font-size: 0.75rem;
   font-weight: 600;
+  color: white;
   text-align: center;
-  min-width: 80px;
-  display: inline-block;
+  white-space: nowrap;
 }
 
 .score {
   font-weight: 600;
-  color: #059669;
-  font-size: 0.875rem;
+  color: #10b981;
 }
 
 .no-score {
-  color: #9ca3af;
+  color: #94a3b8;
   font-style: italic;
-  font-size: 0.875rem;
 }
 
 .comment-preview {
-  color: #64748b;
-  font-size: 0.875rem;
   max-width: 200px;
-  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
-/* 드래그 앤 드롭 스타일 */
-.kanban-column.drag-over {
-  background: #f8fafc;
-  border-color: #3b82f6;
+/* 버튼 스타일 */
+.btn {
+  padding: 0.75rem 1.5rem;
+  border: none;
+  border-radius: 8px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
 }
 
-.candidate-card.dragging {
-  opacity: 0.5;
-  transform: rotate(5deg);
+.btn-primary {
+  background: #3b82f6;
+  color: white;
+}
+
+.btn-primary:hover {
+  background: #2563eb;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+}
+
+.btn-secondary {
+  background: #f3f4f6;
+  color: #374151;
+}
+
+.btn-secondary:hover {
+  background: #e5e7eb;
 }
 
 /* 반응형 디자인 */
-@media (max-width: 1280px) {
-  .kanban-board {
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 1.25rem;
+@media (max-width: 1200px) {
+  .stats-summary {
+    grid-template-columns: repeat(2, 1fr);
   }
 }
 
 @media (max-width: 768px) {
-  .page-header {
-    padding: 1.5rem;
+  .candidates-page {
+    padding: 1rem;
   }
   
-  .header-content h1 {
-    font-size: 1.75rem;
+  .page-header {
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+  }
+  
+  .page-header h1 {
+    font-size: 1.5rem;
   }
   
   .header-actions {
@@ -324,25 +272,26 @@
     align-items: stretch;
   }
   
-  .view-toggle {
-    justify-content: center;
-  }
-  
-  .kanban-board {
+  .stats-summary {
     grid-template-columns: 1fr;
     gap: 1rem;
   }
   
-  .kanban-column {
-    min-height: 400px;
-  }
-  
-  .column-content {
-    min-height: 300px;
+  .stat-item {
+    padding: 1rem;
   }
   
   .table-container {
-    min-width: 800px;
+    margin: 0 -1rem;
+  }
+  
+  .table-container table {
+    min-width: 600px;
+  }
+  
+  .table-container th,
+  .table-container td {
+    padding: 0.75rem 1rem;
   }
 }
 
@@ -352,18 +301,15 @@
   }
   
   .header-content h1 {
-    font-size: 1.5rem;
+    font-size: 1.25rem;
   }
   
-  .kanban-column {
-    min-height: 350px;
+  .header-content p {
+    font-size: 1rem;
   }
   
-  .column-content {
-    min-height: 250px;
-  }
-  
-  .candidate-card {
-    padding: 0.75rem;
+  .toggle-btn {
+    padding: 0.5rem 0.75rem;
+    font-size: 0.8rem;
   }
 }

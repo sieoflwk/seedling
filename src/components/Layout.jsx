@@ -1,9 +1,11 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
+import AddCandidateModal from './AddCandidateModal';
 import './Layout.css';
 
 const Layout = ({ children }) => {
   const location = useLocation();
+  const [isAddModalOpen, setIsAddModalOpen] = useState(false);
 
   const navItems = [
     { path: '/', label: '대시보드', icon: '📊' },
@@ -12,6 +14,12 @@ const Layout = ({ children }) => {
     { path: '/reports', label: '통계 리포트', icon: '📈' },
     { path: '/settings', label: '설정', icon: '⚙️' }
   ];
+
+  const handleAddCandidateSuccess = (newCandidate) => {
+    // 새 지원자 추가 성공 시 처리
+    console.log('새 지원자가 추가되었습니다:', newCandidate);
+    // 여기서 필요한 경우 부모 컴포넌트에 알림을 보낼 수 있습니다
+  };
 
   return (
     <div className="layout">
@@ -26,7 +34,10 @@ const Layout = ({ children }) => {
             <button className="btn btn-secondary">
               📤 데이터 내보내기
             </button>
-            <button className="btn btn-primary">
+            <button 
+              className="btn btn-primary"
+              onClick={() => setIsAddModalOpen(true)}
+            >
               👤 새 지원자 추가
             </button>
           </div>
@@ -64,6 +75,13 @@ const Layout = ({ children }) => {
           <p>&copy; 2025 Seedling ATS. 무한한 성장 가능성을 함께합니다.</p>
         </div>
       </footer>
+
+      {/* 지원자 추가 모달 */}
+      <AddCandidateModal
+        isOpen={isAddModalOpen}
+        onClose={() => setIsAddModalOpen(false)}
+        onSuccess={handleAddCandidateSuccess}
+      />
     </div>
   );
 };
