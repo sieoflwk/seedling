@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import AddCandidateModal from './AddCandidateModal';
 import './Layout.css';
 
 const Layout = ({ children }) => {
@@ -238,8 +237,7 @@ const Layout = ({ children }) => {
         <div className="header-content">
           {/* 왼쪽: 로고 */}
           <div className="logo">
-            <h1>🌱 Seedling</h1>
-            <span className="subtitle">채용 관리 시스템</span>
+            <img src="/seedling-icon.svg" alt="Seedling" className="logo-icon" />
           </div>
           
           {/* 중앙: 네비게이션 탭 */}
@@ -332,12 +330,6 @@ const Layout = ({ children }) => {
         </div>
       </footer>
 
-      {/* 지원자 추가 모달 */}
-      <AddCandidateModal
-        isOpen={isAddModalOpen}
-        onClose={() => setIsAddModalOpen(false)}
-        onSuccess={handleAddCandidateSuccess}
-      />
     </div>
   );
 };

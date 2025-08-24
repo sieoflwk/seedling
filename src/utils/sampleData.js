@@ -187,15 +187,32 @@ export const generateSampleCandidates = () => {
 
 // 샘플 데이터를 로컬스토리지에 저장
 export const initializeSampleData = () => {
+  console.log('=== 샘플 데이터 초기화 시작 ===');
+  
   const existingData = localStorage.getItem('seedling_candidates');
+  console.log('기존 데이터 확인:', existingData);
   
   if (!existingData || JSON.parse(existingData).length === 0) {
+    console.log('샘플 데이터 생성 중...');
     const sampleCandidates = generateSampleCandidates();
-    localStorage.setItem('seedling_candidates', JSON.stringify(sampleCandidates));
+    console.log('생성된 샘플 데이터:', sampleCandidates);
+    console.log('샘플 데이터 수:', sampleCandidates.length);
+    
+    const jsonData = JSON.stringify(sampleCandidates);
+    console.log('JSON으로 변환된 데이터:', jsonData);
+    
+    localStorage.setItem('seedling_candidates', jsonData);
+    console.log('로컬스토리지에 저장 완료');
+    
+    // 저장 확인
+    const savedData = localStorage.getItem('seedling_candidates');
+    console.log('저장 후 확인:', savedData);
+    
     console.log('샘플 데이터가 초기화되었습니다.');
     return true;
   }
   
+  console.log('기존 데이터가 있어서 샘플 데이터 초기화 건너뜀');
   return false;
 };
 

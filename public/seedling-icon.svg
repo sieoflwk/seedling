@@ -1,0 +1,31 @@
+<svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- 새싹 줄기 (그라데이션) -->
+  <defs>
+    <linearGradient id="stemGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#34C759;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#2E8B47;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="leafGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#34C759;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#30D158;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <!-- 새싹 줄기 -->
+  <path d="M24 42C24 42 26.25 36 26.25 30C26.25 24 24 18 24 18C24 18 21.75 24 21.75 30C21.75 36 24 42 24 42Z" fill="url(#stemGradient)" stroke="#2E8B47" stroke-width="0.5"/>
+  
+  <!-- 왼쪽 잎사귀 -->
+  <path d="M24 18C24 18 18 21.75 15.75 27.75C13.5 33.75 18.75 38.25 24 35.25C24 35.25 24 30 24 18Z" fill="url(#leafGradient)" stroke="#2E8B47" stroke-width="0.5"/>
+  
+  <!-- 오른쪽 잎사귀 -->
+  <path d="M24 18C24 18 30 21.75 32.25 27.75C34.5 33.75 29.25 38.25 24 35.25C24 35.25 24 30 24 18Z" fill="url(#leafGradient)" stroke="#2E8B47" stroke-width="0.5"/>
+  
+  <!-- 새싹 끝 부분 (둥근 모양) -->
+  <ellipse cx="24" cy="18" rx="3.3" ry="2.7" fill="url(#leafGradient)" stroke="#2E8B47" stroke-width="0.5"/>
+  
+  <!-- 흙/뿌리 부분 -->
+  <path d="M21.75 42C21.75 42 24 45.75 26.25 42C26.25 42 24 44.25 21.75 42Z" fill="#8B4513" stroke="#654321" stroke-width="0.5"/>
+  
+  <!-- 작은 잎사귀 장식 -->
+  <path d="M24 21C24 21 22.5 23.25 22.5 25.5C22.5 27.75 24 28.5 24 28.5C24 28.5 25.5 27.75 25.5 25.5C25.5 23.25 24 21 24 21Z" fill="#30D158" opacity="0.8"/>
+</svg>

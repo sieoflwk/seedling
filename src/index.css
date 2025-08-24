@@ -7,7 +7,7 @@
   font-weight: 400;
   transition: color 0.3s ease, background-color 0.3s ease;
   
-  /* 색상 변수 */
+  /* 색상 변수 - Apple 스타일로 통일 */
   --color-text-primary: #1d1d1f;
   --color-text-secondary: #6e6e73;
   --color-text-tertiary: #86868b;
@@ -19,8 +19,11 @@
   --color-border-primary: #d2d2d7;
   --color-border-secondary: #e5e5e7;
   
+  /* 메인 컬러를 Apple Blue로 통일 */
   --color-primary: #007AFF;
   --color-primary-hover: #0056CC;
+  
+  /* 포인트 컬러는 그린만 사용 */
   --color-success: #34c759;
   --color-success-hover: #30d158;
   --color-warning: #ff9500;

@@ -240,38 +240,46 @@ const Dashboard = () => {
       {/* 통계 카드 섹션 */}
       <div className="stats-grid">
         <div className="stat-card">
-          <div className="stat-header">
-            <span className="stat-title">전체 지원자</span>
-            <div className="stat-icon">👥</div>
+          <div className="stat-content">
+            <div className="stat-info">
+              <h3>{statistics.total}</h3>
+              <p>전체 지원자</p>
+            </div>
+            <div className="stat-icon users">👥</div>
           </div>
-          <div className="stat-value">{statistics.total}</div>
         </div>
 
         <div className="stat-card">
-          <div className="stat-header">
-            <span className="stat-title">최근 7일 지원</span>
-            <div className="stat-icon">📅</div>
+          <div className="stat-content">
+            <div className="stat-info">
+              <h3>{statistics.recentApplications}</h3>
+              <p>최근 7일 지원</p>
+            </div>
+            <div className="stat-icon interviews">📅</div>
           </div>
-          <div className="stat-value">{statistics.recentApplications}</div>
         </div>
 
         <div className="stat-card">
-          <div className="stat-header">
-            <span className="stat-title">평균 평가점수</span>
-            <div className="stat-icon">⭐</div>
+          <div className="stat-content">
+            <div className="stat-info">
+              <h3>{statistics.averageScore}점</h3>
+              <p>평균 평가점수</p>
+            </div>
+            <div className="stat-icon pending">⭐</div>
           </div>
-          <div className="stat-value">{statistics.averageScore}점</div>
         </div>
 
         <div className="stat-card">
-          <div className="stat-header">
-            <span className="stat-title">진행률</span>
-            <div className="stat-icon">🎯</div>
-          </div>
-          <div className="stat-value">
-            {statistics.total > 0 
-              ? Math.round((statistics.byStage[CANDIDATE_STAGES.FINAL_PASS] / statistics.total) * 100)
-              : 0}%
+          <div className="stat-content">
+            <div className="stat-info">
+              <h3>
+                {statistics.total > 0 
+                  ? Math.round((statistics.byStage[CANDIDATE_STAGES.FINAL_PASS] / statistics.total) * 100)
+                  : 0}%
+              </h3>
+              <p>진행률</p>
+            </div>
+            <div className="stat-icon accepted">🎯</div>
           </div>
         </div>
       </div>
@@ -280,9 +288,6 @@ const Dashboard = () => {
       <div className="charts-section">
         {/* 도넛 차트 - 단계별 현황 */}
         <div className="chart-container">
-          <div className="chart-header">
-            <h3 className="chart-title">📊 단계별 지원자 현황</h3>
-          </div>
           <div className="chart-content">
             {getDoughnutChartData() && (
               <Doughnut data={getDoughnutChartData()} options={doughnutOptions} />
@@ -292,9 +297,6 @@ const Dashboard = () => {
 
         {/* 바 차트 - 월별 지원자 추이 */}
         <div className="chart-container">
-          <div className="chart-header">
-            <h3 className="chart-title">📈 월별 지원자 추이</h3>
-          </div>
           <div className="chart-content">
             {getBarChartData() && (
               <Bar data={getBarChartData()} options={barOptions} />
@@ -304,75 +306,44 @@ const Dashboard = () => {
       </div>
 
       {/* 단계별 현황 섹션 */}
-      <div className="stages-overview">
-        <h2>📋 단계별 지원자 현황</h2>
-        <div className="stages-grid">
-          {Object.values(CANDIDATE_STAGES).map((stage) => (
-            <div 
-              key={stage} 
-              className="stage-card" 
-              style={{ '--stage-color': getStageColor(stage) }}
-            >
-              <div className="stage-header">
-                <h3>{STAGE_LABELS[stage]}</h3>
-                <span className="stage-count">{candidatesByStage[stage]?.length || 0}</span>
-              </div>
-              <div className="stage-candidates">
-                {candidatesByStage[stage]?.slice(0, 3).map((candidate) => (
-                  <div key={candidate.id} className="candidate-preview">
-                    <div className="candidate-info">
-                      <strong>{candidate.name}</strong>
-                      <span>{candidate.position}</span>
-                    </div>
-                    <div className="candidate-score">
-                      {candidate.score > 0 && (
-                        <span className="score-badge">{candidate.score}점</span>
-                      )}
-                    </div>
-                  </div>
-                ))}
-                {candidatesByStage[stage]?.length > 3 && (
-                  <div className="more-candidates">
-                    +{candidatesByStage[stage].length - 3}명 더보기
-                  </div>
-                )}
-              </div>
-            </div>
-          ))}
-        </div>
+      <div className="stages-grid">
+        {Object.values(CANDIDATE_STAGES).map((stage) => (
+          <div key={stage} className="stage-card">
+            <div className="stage-number">{candidatesByStage[stage]?.length || 0}</div>
+            <div className="stage-label">{STAGE_LABELS[stage]}</div>
+          </div>
+        ))}
       </div>
 
       {/* 빠른 액션 섹션 */}
-      <div className="quick-actions">
-        <div className="quick-actions-header">
-          <div className="header-content">
-            <h2>⚡ 빠른 액션</h2>
-            <p>자주 사용하는 기능에 빠르게 접근하세요</p>
-          </div>
+      <div className="actions-grid">
+        <div className="action-card">
+          <h3>👤 지원자 추가</h3>
+          <p>새로운 지원자 정보를 등록하고 관리하세요</p>
           <button 
             className="btn btn-primary"
             onClick={() => setIsAddModalOpen(true)}
           >
-            👤 지원자 추가
+            추가하기
           </button>
         </div>
-        <div className="actions-grid">
-          <button className="quick-action-btn secondary">
-            <span className="action-icon">📅</span>
-            <span>면접 일정 등록</span>
-          </button>
-          <button className="quick-action-btn secondary">
-            <span className="action-icon">📊</span>
-            <span>월간 리포트</span>
-          </button>
-          <button className="quick-action-btn secondary">
-            <span className="action-icon">💾</span>
-            <span>데이터 백업</span>
-          </button>
-          <button className="quick-action-btn secondary">
-            <span className="action-icon">⚙️</span>
-            <span>설정</span>
-          </button>
+        
+        <div className="action-card">
+          <h3>📅 면접 일정</h3>
+          <p>면접 일정을 등록하고 관리하세요</p>
+          <button className="btn btn-secondary">일정 관리</button>
+        </div>
+        
+        <div className="action-card">
+          <h3>📊 월간 리포트</h3>
+          <p>월간 채용 현황 리포트를 생성하세요</p>
+          <button className="btn btn-secondary">리포트 생성</button>
+        </div>
+        
+        <div className="action-card">
+          <h3>💾 데이터 백업</h3>
+          <p>현재 데이터를 백업하고 복원하세요</p>
+          <button className="btn btn-secondary">백업하기</button>
         </div>
       </div>
 
