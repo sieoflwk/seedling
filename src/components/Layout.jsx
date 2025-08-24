@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { Link, useLocation } from 'react-router-dom';
+import AddCandidateModal from './AddCandidateModal';
 import './Layout.css';
 
 const Layout = ({ children }) => {
@@ -215,6 +216,12 @@ const Layout = ({ children }) => {
     }
   };
 
+  const handleAddCandidateSuccess = (newCandidate) => {
+    // 새 지원자 추가 성공 시 처리
+    console.log('새 지원자가 추가되었습니다:', newCandidate);
+    // 여기서 필요한 경우 부모 컴포넌트에 알림을 보낼 수 있습니다
+  };
+
   return (
     <div className="layout">
       {/* 숨겨진 파일 입력 */}
@@ -324,6 +331,13 @@ const Layout = ({ children }) => {
           <p>&copy; 2025 Seedling ATS. 무한한 성장 가능성을 함께합니다.</p>
         </div>
       </footer>
+
+      {/* 지원자 추가 모달 */}
+      <AddCandidateModal
+        isOpen={isAddModalOpen}
+        onClose={() => setIsAddModalOpen(false)}
+        onSuccess={handleAddCandidateSuccess}
+      />
     </div>
   );
 };

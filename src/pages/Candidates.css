@@ -1,5 +1,6 @@
 /* 지원자 관리 페이지 스타일 */
 .candidates-page {
+  width: 100%;
   max-width: 100%;
   background-color: var(--color-bg-primary);
   transition: background-color 0.3s ease;
@@ -40,6 +41,62 @@
   margin-top: 1.5rem;
 }
 
+/* 통계 요약 - 데스크톱에서 가로 4개 배열 */
+.stats-summary {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.stat-item {
+  background: white;
+  padding: 1.5rem;
+  border-radius: 12px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+  border: 1px solid #f1f5f9;
+  text-align: center;
+  transition: all 0.2s ease;
+}
+
+.stat-item:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.stat-number {
+  display: block;
+  font-size: 2rem;
+  font-weight: 700;
+  color: #0f172a;
+  margin-bottom: 0.5rem;
+}
+
+.stat-label {
+  font-size: 0.875rem;
+  color: #64748b;
+  font-weight: 500;
+}
+
+/* 섹션 헤더 */
+.section-header {
+  margin-bottom: 1.5rem;
+  padding: 0 0.5rem;
+}
+
+.section-header h2 {
+  margin: 0 0 0.5rem 0;
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #0f172a;
+}
+
+.section-header p {
+  margin: 0;
+  font-size: 1rem;
+  color: #64748b;
+}
+
 /* 뷰 토글 버튼 */
 .view-toggle {
   display: flex;
@@ -72,11 +129,8 @@
   color: var(--color-text-primary);
 }
 
-/* 칸반보드 스타일 */
-.kanban-board {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 1.5rem;
+/* 칸반보드 섹션 */
+.kanban-section {
   margin-bottom: 2rem;
 }
 
@@ -274,12 +328,17 @@
   transition: color 0.3s ease;
 }
 
+/* 테이블 섹션 */
+.table-section {
+  margin-bottom: 2rem;
+}
+
 /* 테이블 뷰 */
 .table-view {
   background: var(--color-bg-secondary);
   border-radius: 16px;
-  box-shadow: var(--shadow-md);
-  border: 1px solid var(--color-border-secondary);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+  border: 1px solid #f1f5f9;
   overflow: hidden;
   transition: background-color 0.3s ease, border-color 0.3s ease;
 }
@@ -291,64 +350,41 @@
 .table-container table {
   width: 100%;
   border-collapse: collapse;
+  min-width: 800px;
 }
 
 .table-container th {
-  background: var(--color-bg-tertiary);
-  padding: 1.5rem 1.25rem;
+  background: #f8fafc;
+  padding: 1rem 1.5rem;
   text-align: left;
-  font-weight: 600;
-  color: var(--color-text-primary);
-  border-bottom: 2px solid var(--color-border-secondary);
   font-size: 0.875rem;
-  letter-spacing: 0.01em;
+  font-weight: 600;
+  color: #475569;
+  border-bottom: 1px solid #e2e8f0;
   white-space: nowrap;
   transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
 }
 
 .table-container td {
-  padding: 1.5rem 1.25rem;
-  border-bottom: 1px solid var(--color-border-secondary);
+  padding: 1rem 1.5rem;
+  border-bottom: 1px solid #f1f5f9;
   vertical-align: middle;
   color: var(--color-text-secondary);
   transition: all 0.2s ease;
   text-align: left;
 }
 
-/* 행 구분 강화 */
-.candidate-row {
-  transition: all 0.2s ease;
+.table-container tr:hover {
+  background: #f8fafc;
   cursor: pointer;
 }
 
-.candidate-row:hover {
-  background: var(--color-bg-tertiary);
-  transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-}
-
-.even-row {
-  background: var(--color-bg-primary);
-}
-
-.odd-row {
-  background: var(--color-bg-secondary);
-}
-
-.even-row:hover,
-.odd-row:hover {
-  background: var(--color-bg-tertiary);
-}
-
-.table-container tr:last-child td {
-  border-bottom: none;
-}
-
-/* 정보 계층 개선 */
-.candidate-info-cell {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
+.candidate-name strong {
+  display: block;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #0f172a;
+  margin-bottom: 0.25rem;
 }
 
 .candidate-name strong {
@@ -382,58 +418,34 @@
 
 /* 상태 표시 개선 */
 .stage-badge {
-  color: white;
-  padding: 0.5rem 1rem;
+  display: inline-block;
+  padding: 0.25rem 0.75rem;
   border-radius: 20px;
   font-size: 0.75rem;
   font-weight: 600;
+  color: white;
   text-align: center;
-  min-width: 90px;
-  display: inline-block;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  transition: all 0.2s ease;
+  white-space: nowrap;
 }
 
-.stage-badge:hover {
-  transform: translateY(-1px);
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
-}
-
-/* 평가점수 개선 */
-.score-cell {
-  display: flex;
-  align-items: baseline;
-  gap: 0.25rem;
-}
-
-.score-value {
-  font-weight: 700;
-  color: var(--color-success);
-  font-size: 1.25rem;
-  transition: color 0.3s ease;
-}
-
-.score-unit {
-  color: var(--color-text-secondary);
-  font-size: 0.875rem;
-  font-weight: 500;
+.score {
+  font-weight: 600;
+  color: #10b981;
 }
 
 .no-score {
-  color: var(--color-text-tertiary);
+  color: #94a3b8;
   font-style: italic;
-  font-size: 0.875rem;
-  transition: color 0.3s ease;
 }
 
 /* 코멘트 미리보기 */
 .comment-preview {
   color: var(--color-text-secondary);
   font-size: 0.875rem;
-  max-width: 180px;
-  display: block;
-  transition: color 0.3s ease;
-  line-height: 1.4;
+  max-width: 200px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 /* 액션 버튼 */
@@ -485,26 +497,59 @@
   transition: background-color 0.3s ease, border-color 0.3s ease;
 }
 
-.candidate-card.dragging {
-  opacity: 0.5;
-  transform: rotate(5deg);
+/* 버튼 스타일 */
+.btn {
+  padding: 0.75rem 1.5rem;
+  border: none;
+  border-radius: 8px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.btn-primary {
+  background: #3b82f6;
+  color: white;
+}
+
+.btn-primary:hover {
+  background: #2563eb;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+}
+
+.btn-secondary {
+  background: #f3f4f6;
+  color: #374151;
+}
+
+.btn-secondary:hover {
+  background: #e5e7eb;
 }
 
 /* 반응형 디자인 */
-@media (max-width: 1280px) {
-  .kanban-board {
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 1.25rem;
+@media (max-width: 1200px) {
+  .stats-summary {
+    grid-template-columns: repeat(2, 1fr);
   }
 }
 
 @media (max-width: 768px) {
-  .page-header {
-    padding: 1.5rem;
+  .candidates-page {
+    padding: 1rem;
   }
   
-  .header-content h1 {
-    font-size: 1.75rem;
+  .page-header {
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+  }
+  
+  .page-header h1 {
+    font-size: 1.5rem;
   }
   
   .header-actions {
@@ -513,25 +558,26 @@
     align-items: stretch;
   }
   
-  .view-toggle {
-    justify-content: center;
-  }
-  
-  .kanban-board {
+  .stats-summary {
     grid-template-columns: 1fr;
     gap: 1rem;
   }
   
-  .kanban-column {
-    min-height: 400px;
-  }
-  
-  .column-content {
-    min-height: 300px;
+  .stat-item {
+    padding: 1rem;
   }
   
   .table-container {
-    min-width: 900px;
+    margin: 0 -1rem;
+  }
+  
+  .table-container table {
+    min-width: 600px;
+  }
+  
+  .table-container th,
+  .table-container td {
+    padding: 0.75rem 1rem;
   }
 }
 
@@ -541,19 +587,16 @@
   }
   
   .header-content h1 {
-    font-size: 1.5rem;
+    font-size: 1.25rem;
   }
   
-  .kanban-column {
-    min-height: 350px;
+  .header-content p {
+    font-size: 1rem;
   }
   
-  .column-content {
-    min-height: 250px;
-  }
-  
-  .candidate-card {
-    padding: 0.75rem;
+  .toggle-btn {
+    padding: 0.5rem 0.75rem;
+    font-size: 0.8rem;
   }
 }
 

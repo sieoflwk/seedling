@@ -1,0 +1,255 @@
+.kanban-board {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1rem;
+  min-height: 500px;
+}
+
+.kanban-column {
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  border: 1px solid #e2e8f0;
+  display: flex;
+  flex-direction: column;
+  min-height: 450px;
+  position: relative;
+  transition: all 0.2s ease;
+}
+
+.kanban-column:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.column-header {
+  padding: 1rem;
+  border-top: 3px solid;
+  border-radius: 8px 8px 0 0;
+  background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.column-header h3 {
+  margin: 0 0 0.5rem 0;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #1e293b;
+}
+
+.candidate-count {
+  background: rgba(0, 0, 0, 0.1);
+  color: #475569;
+  padding: 0.125rem 0.5rem;
+  border-radius: 12px;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.column-content {
+  flex: 1;
+  padding: 0.75rem;
+  overflow-y: auto;
+  min-height: 150px;
+}
+
+.candidate-card {
+  background: white;
+  border: 1px solid #e2e8f0;
+  border-radius: 6px;
+  padding: 0.75rem;
+  margin-bottom: 0.5rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  position: relative;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+
+.candidate-card:hover {
+  border-color: #3b82f6;
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.15);
+  transform: translateY(-1px);
+}
+
+.candidate-card.dragging {
+  opacity: 0.7;
+  transform: rotate(3deg);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+}
+
+.candidate-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 0.5rem;
+}
+
+.candidate-header h4 {
+  margin: 0;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #1e293b;
+  line-height: 1.3;
+}
+
+.score-badge {
+  background: #10b981;
+  color: white;
+  padding: 0.125rem 0.5rem;
+  border-radius: 8px;
+  font-size: 0.7rem;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.candidate-info {
+  margin-bottom: 0.5rem;
+}
+
+.candidate-info p {
+  margin: 0 0 0.25rem 0;
+  font-size: 0.8rem;
+  color: #64748b;
+}
+
+.candidate-info .position {
+  font-weight: 500;
+  color: #475569;
+}
+
+.candidate-info .date {
+  font-size: 0.7rem;
+  color: #94a3b8;
+}
+
+.candidate-comment {
+  background: #f8fafc;
+  border-left: 2px solid #e2e8f0;
+  padding: 0.5rem 0.75rem;
+  border-radius: 0 4px 4px 0;
+  margin-top: 0.5rem;
+}
+
+.candidate-comment p {
+  margin: 0;
+  font-size: 0.7rem;
+  color: #64748b;
+  line-height: 1.3;
+}
+
+.drag-handle {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  color: #cbd5e1;
+  font-size: 0.75rem;
+  cursor: grab;
+  user-select: none;
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+
+.candidate-card:hover .drag-handle {
+  opacity: 1;
+}
+
+.drag-handle:active {
+  cursor: grabbing;
+}
+
+.empty-column {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 80px;
+  color: #94a3b8;
+  font-size: 0.75rem;
+  border: 1px dashed #e2e8f0;
+  border-radius: 6px;
+  margin-top: 0.5rem;
+  text-align: center;
+  padding: 1rem;
+}
+
+.empty-column p {
+  margin: 0 0 4px 0;
+  font-weight: 500;
+}
+
+.empty-column small {
+  font-size: 0.75rem;
+  color: #cbd5e1;
+  line-height: 1.4;
+}
+
+.drop-zone {
+  height: 20px;
+  margin: 8px 0;
+  border-radius: 4px;
+  transition: background-color 0.2s;
+}
+
+.drop-zone:hover {
+  background-color: rgba(59, 130, 246, 0.1);
+}
+
+/* 드래그 중일 때의 스타일 */
+.kanban-column.drag-over {
+  background-color: rgba(59, 130, 246, 0.05);
+}
+
+.kanban-column.drag-over .column-content {
+  background-color: rgba(59, 130, 246, 0.02);
+}
+
+/* 드래그 오버레이 스타일 */
+.candidate-card.dragging-overlay {
+  background: white;
+  border: 2px solid #3b82f6;
+  box-shadow: 0 8px 25px rgba(59, 130, 246, 0.3);
+  transform: rotate(5deg);
+  opacity: 0.9;
+  cursor: grabbing;
+}
+
+/* 반응형 디자인 */
+@media (max-width: 768px) {
+  .kanban-board {
+    grid-template-columns: 1fr;
+    gap: 16px;
+    padding: 16px 0;
+  }
+  
+  .kanban-column {
+    min-height: 400px;
+  }
+  
+  .column-header,
+  .column-content {
+    padding: 16px;
+  }
+  
+  .candidate-card {
+    padding: 12px;
+    margin-bottom: 8px;
+  }
+}
+
+/* 스크롤바 스타일링 */
+.column-content::-webkit-scrollbar {
+  width: 6px;
+}
+
+.column-content::-webkit-scrollbar-track {
+  background: #f1f5f9;
+  border-radius: 3px;
+}
+
+.column-content::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 3px;
+}
+
+.column-content::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
