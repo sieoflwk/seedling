@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import KanbanBoard from '../components/KanbanBoard';
-import { loadCandidates, loadStatistics } from '../data/localStorage';
+import { loadCandidates, loadStatistics, candidateStorage } from '../data/localStorage';
 import './Candidates.css';
 
 const Candidates = () => {
@@ -14,14 +14,48 @@ const Candidates = () => {
   }, []);
 
   const handleUpdateCandidate = (updatedCandidate) => {
-    // localStorage에서 지원자 업데이트
-    const updatedCandidates = allCandidates.map(candidate =>
-      candidate.id === updatedCandidate.id ? updatedCandidate : candidate
-    );
-    setAllCandidates(updatedCandidates);
+    // 삭제된 지원자인 경우
+    if (updatedCandidate.isDeleted) {
+      const result = candidateStorage.deleteCandidate(updatedCandidate.id);
+      
+      if (result.success) {
+        // 로컬 상태에서 제거
+        const filteredCandidates = allCandidates.filter(
+          candidate => candidate.id !== updatedCandidate.id
+        );
+        setAllCandidates(filteredCandidates);
+        
+        // 통계 재계산
+        loadStatistics().then(setStatistics);
+        
+        console.log('지원자 삭제 성공:', updatedCandidate.id);
+        
+        // 토스트 메시지 표시 (간단한 alert로 대체)
+        alert('지원자가 삭제되었습니다.');
+      } else {
+        console.error('지원자 삭제 실패:', result.error);
+        alert('지원자 삭제에 실패했습니다.');
+      }
+      return;
+    }
+
+    // 일반 업데이트인 경우
+    const result = candidateStorage.updateCandidate(updatedCandidate);
     
-    // 통계 재계산
-    loadStatistics().then(setStatistics);
+    if (result.success) {
+      // 로컬 상태 업데이트
+      const updatedCandidates = allCandidates.map(candidate =>
+        candidate.id === updatedCandidate.id ? result.candidate : candidate
+      );
+      setAllCandidates(updatedCandidates);
+      
+      // 통계 재계산
+      loadStatistics().then(setStatistics);
+      
+      console.log('지원자 정보 업데이트 성공:', result.candidate);
+    } else {
+      console.error('지원자 정보 업데이트 실패:', result.error);
+    }
   };
 
   return (

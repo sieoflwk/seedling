@@ -15,6 +15,7 @@ import {
 } from '@dnd-kit/sortable';
 import { CSS } from '@dnd-kit/utilities';
 import { CANDIDATE_STAGES, STAGE_LABELS } from '../data/candidateModel';
+import CandidateDetailModal from './CandidateDetailModal';
 import './KanbanBoard.css';
 
 const KanbanBoard = ({ candidates, onUpdateCandidate }) => {
@@ -25,6 +26,27 @@ const KanbanBoard = ({ candidates, onUpdateCandidate }) => {
     '면접': [],
     '최종합격': []
   });
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedCandidate, setSelectedCandidate] = useState(null);
+
+  // 면접 예정일이 다가오는지 확인하는 함수
+  const isInterviewUpcoming = (candidate) => {
+    if (!candidate.interviewSchedule?.date) return false;
+    
+    const interviewDate = new Date(candidate.interviewSchedule.date);
+    const today = new Date();
+    const diffTime = interviewDate.getTime() - today.getTime();
+    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+    
+    return diffDays >= 0 && diffDays <= 3;
+  };
+
+  // 날짜 포맷팅 함수
+  const formatDate = (dateString) => {
+    if (!dateString) return '';
+    const date = new Date(dateString);
+    return date.toLocaleDateString('ko-KR');
+  };
 
   // candidates가 변경될 때마다 candidatesByStage 업데이트
   React.useEffect(() => {
@@ -174,36 +196,76 @@ const KanbanBoard = ({ candidates, onUpdateCandidate }) => {
     return null;
   };
 
+  const handleCardClick = (candidate) => {
+    setSelectedCandidate(candidate);
+    setIsModalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+    setSelectedCandidate(null);
+  };
+
+  const handleUpdateCandidate = (updatedCandidate) => {
+    onUpdateCandidate(updatedCandidate);
+    setIsModalOpen(false);
+    setSelectedCandidate(null);
+  };
+
+  const handleDeleteCandidate = (candidateId) => {
+    onUpdateCandidate({ id: candidateId, isDeleted: true });
+    setIsModalOpen(false);
+    setSelectedCandidate(null);
+  };
+
   const stages = ['접수', '서류평가', '면접', '최종합격'];
 
   return (
-    <DndContext
-      sensors={sensors}
-      collisionDetection={closestCenter}
-      onDragStart={handleDragStart}
-      onDragOver={handleDragOver}
-      onDragEnd={handleDragEnd}
-    >
-      <div className="kanban-board">
-        {stages.map((stage) => (
-          <KanbanColumn
-            key={stage}
-            stage={stage}
-            candidates={candidatesByStage[stage] || []}
-          />
-        ))}
-      </div>
-      
-      <DragOverlay>
-        {activeId ? (
-          <CandidateCardOverlay candidate={getActiveCandidate()} />
-        ) : null}
-      </DragOverlay>
-    </DndContext>
+    <>
+      <DndContext
+        sensors={sensors}
+        collisionDetection={closestCenter}
+        onDragStart={handleDragStart}
+        onDragOver={handleDragOver}
+        onDragEnd={handleDragEnd}
+      >
+        <div className="kanban-board">
+          {stages.map((stage) => (
+            <KanbanColumn
+              key={stage}
+              stage={stage}
+              candidates={candidatesByStage[stage] || []}
+              onCardClick={handleCardClick}
+              isInterviewUpcoming={isInterviewUpcoming}
+              formatDate={formatDate}
+            />
+          ))}
+        </div>
+        
+        <DragOverlay>
+          {activeId ? (
+            <CandidateCardOverlay 
+              candidate={getActiveCandidate()} 
+              isInterviewUpcoming={isInterviewUpcoming}
+              formatDate={formatDate}
+            />
+          ) : null}
+        </DragOverlay>
+      </DndContext>
+
+      {/* 지원자 상세 정보 모달 */}
+      <CandidateDetailModal
+        isOpen={isModalOpen}
+        onClose={handleCloseModal}
+        candidate={selectedCandidate}
+        onUpdate={handleUpdateCandidate}
+        onDelete={handleDeleteCandidate}
+      />
+    </>
   );
 };
 
-const KanbanColumn = ({ stage, candidates }) => {
+const KanbanColumn = ({ stage, candidates, onCardClick, isInterviewUpcoming, formatDate }) => {
   const { setNodeRef } = useSortable({
     id: stage,
     data: {
@@ -227,6 +289,9 @@ const KanbanColumn = ({ stage, candidates }) => {
             <SortableCandidateCard
               key={candidate.id}
               candidate={candidate}
+              onCardClick={onCardClick}
+              isInterviewUpcoming={isInterviewUpcoming}
+              formatDate={formatDate}
             />
           ))}
         </SortableContext>
@@ -241,15 +306,19 @@ const KanbanColumn = ({ stage, candidates }) => {
   );
 };
 
-const SortableCandidateCard = ({ candidate }) => {
+const SortableCandidateCard = ({ candidate, onCardClick, isInterviewUpcoming, formatDate }) => {
   const {
     attributes,
     listeners,
     setNodeRef,
     transform,
     transition,
-    isDragging,
+    isDragging
   } = useSortable({ id: candidate.id });
+
+  const [isClickable, setIsClickable] = useState(true);
+  const [mouseDownTime, setMouseDownTime] = useState(0);
+  const [mouseDownPosition, setMouseDownPosition] = useState({ x: 0, y: 0 });
 
   const style = {
     transform: CSS.Transform.toString(transform),
@@ -258,44 +327,87 @@ const SortableCandidateCard = ({ candidate }) => {
     zIndex: isDragging ? 1000 : 1,
   };
 
+  const handleMouseDown = (e) => {
+    setMouseDownTime(Date.now());
+    setMouseDownPosition({ x: e.clientX, y: e.clientY });
+    setIsClickable(true);
+  };
+
+  const handleMouseMove = (e) => {
+    if (mouseDownTime > 0) {
+      const distance = Math.sqrt(
+        Math.pow(e.clientX - mouseDownPosition.x, 2) + 
+        Math.pow(e.clientY - mouseDownPosition.y, 2)
+      );
+      
+      // 5px 이상 움직이면 드래그로 간주
+      if (distance > 5) {
+        setIsClickable(false);
+      }
+    }
+  };
+
+  const handleMouseUp = (e) => {
+    if (isClickable && mouseDownTime > 0) {
+      const clickDuration = Date.now() - mouseDownTime;
+      
+      // 300ms 이내의 짧은 클릭만 처리
+      if (clickDuration < 300) {
+        onCardClick(candidate);
+      }
+    }
+    
+    setMouseDownTime(0);
+    setMouseDownPosition({ x: 0, y: 0 });
+  };
+
   return (
-    <div
+    <div 
+      className={`candidate-card ${isDragging ? 'dragging' : ''} ${isClickable ? 'clickable' : ''} ${isInterviewUpcoming(candidate) ? 'interview-upcoming' : ''}`}
+      {...attributes} 
       ref={setNodeRef}
-      style={style}
-      className={`candidate-card ${isDragging ? 'dragging' : ''}`}
-      {...attributes}
-      {...listeners} // 카드 전체에 드래그 리스너 적용
+      onMouseDown={handleMouseDown}
+      onMouseMove={handleMouseMove}
+      onMouseUp={handleMouseUp}
     >
       <div className="candidate-header">
         <h4>{candidate.name}</h4>
+        {candidate.interviewSchedule?.date && (
+          <span className="interview-icon" title="면접 일정 등록됨">
+            🕐
+          </span>
+        )}
+      </div>
+      <div className="candidate-info">
+        <p className="position">{candidate.position}</p>
+        <p className="date">{formatDate(candidate.appliedDate)}</p>
         {candidate.score > 0 && (
           <span className="score-badge">{candidate.score}점</span>
         )}
-      </div>
-      
-      <div className="candidate-info">
-        <p className="position">{candidate.position}</p>
-        <p className="date">{new Date(candidate.appliedDate).toLocaleDateString('ko-KR')}</p>
       </div>
     </div>
   );
 };
 
-const CandidateCardOverlay = ({ candidate }) => {
+const CandidateCardOverlay = ({ candidate, isInterviewUpcoming, formatDate }) => {
   if (!candidate) return null;
 
   return (
-    <div className="candidate-card dragging-overlay">
+    <div className={`candidate-card dragging-overlay ${isInterviewUpcoming(candidate) ? 'interview-upcoming' : ''}`}>
       <div className="candidate-header">
         <h4>{candidate.name}</h4>
+        {candidate.interviewSchedule?.date && (
+          <span className="interview-icon" title="면접 일정 등록됨">
+            🕐
+          </span>
+        )}
+      </div>
+      <div className="candidate-info">
+        <p className="position">{candidate.position}</p>
+        <p className="date">{formatDate(candidate.appliedDate)}</p>
         {candidate.score > 0 && (
           <span className="score-badge">{candidate.score}점</span>
         )}
-      </div>
-      
-      <div className="candidate-info">
-        <p className="position">{candidate.position}</p>
-        <p className="date">{new Date(candidate.appliedDate).toLocaleDateString('ko-KR')}</p>
       </div>
     </div>
   );
